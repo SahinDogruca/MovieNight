@@ -91,7 +91,7 @@ public class AdminHome extends JFrame {
             boolean resultEmail = adminDAO.updateAdminEmail(name, CurrPass, newEmail);
             boolean resultPass = adminDAO.updateAdminPassword(name, CurrPass, NewPass);
 
-            if(!resultEmail || !resultPass) {
+            if(!resultEmail && !resultPass) {
                 ConfirmDialog.dialog("Bilgileri Kontrol ediniz!", 2);
             }
 

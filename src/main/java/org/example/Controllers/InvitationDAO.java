@@ -34,7 +34,7 @@ public class InvitationDAO {
         }
 
         // Davetiyeyi ekle
-        String sql = "INSERT INTO invitation (event_id, user_id, status) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO invitations (event_id, user_id, status) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.connect();
              PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -60,7 +60,7 @@ public class InvitationDAO {
     public ArrayList<Events> getAllAcceptedInvitations(int user_id) {
         ArrayList<Events> acceptedInvitations = new ArrayList<>();
 
-        String sql = "SELECT event_id FROM invitation WHERE user_id = ? and status = 'ACCEPTED'";
+        String sql = "SELECT event_id FROM invitations WHERE user_id = ? and status = 'ACCEPTED'";
 
         try(Connection connection = DatabaseConfig.connect();
             PreparedStatement statement = connection.prepareStatement(sql)) {
@@ -83,7 +83,7 @@ public class InvitationDAO {
     }
 
     public ArrayList<Invitation> getAllPendingInvitations(int user_id) {
-        String sql = "SELECT * FROM invitation WHERE user_id = ? and status = 'PENDING'";
+        String sql = "SELECT * FROM invitations WHERE user_id = ? and status = 'PENDING'";
         ArrayList<Invitation> invitations = new ArrayList<>();
 
         try(Connection connection = DatabaseConfig.connect();
@@ -108,7 +108,7 @@ public class InvitationDAO {
     }
 
     public ArrayList<Invitation> getInvitationsByEvent(int event_id) {
-        String sql = "SELECT * FROM invitation WHERE event_id = ? and status = 'ACCEPTED'";
+        String sql = "SELECT * FROM invitations WHERE event_id = ? and status = 'ACCEPTED'";
         ArrayList<Invitation> invitations = new ArrayList<>();
 
         try(Connection connection = DatabaseConfig.connect();
@@ -133,7 +133,7 @@ public class InvitationDAO {
     }
 
     public void updateInvitationStatus(int invitationID, Invitation.Status status) {
-        String sql = "UPDATE invitation SET status = ? WHERE invitation_id = ?";
+        String sql = "UPDATE invitations SET status = ? WHERE invitation_id = ?";
 
         try(Connection connection = DatabaseConfig.connect();
             PreparedStatement statement = connection.prepareStatement(sql)) {

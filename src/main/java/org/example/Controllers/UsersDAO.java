@@ -187,7 +187,7 @@ public class UsersDAO {
 
     private void handleSQLException(SQLException e, String defaultMessage) {
         if (e.getMessage().contains("unique constraint")) {
-            System.out.println("Hata: Kullanıcı adı veya email zaten kullanılıyor.");
+             System.out.println("Hata: Kullanıcı adı veya email zaten kullanılıyor.");
         } else {
             System.out.println(defaultMessage + " " + e.getMessage());
         }

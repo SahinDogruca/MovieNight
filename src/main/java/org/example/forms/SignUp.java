@@ -40,8 +40,12 @@ public class SignUp extends JFrame {
             boolean result1 = usersDAO.addUser(user);
             boolean result2 = usersDAO.authenticateUser(name, pass);
 
-            if(!result1 || !result2) {
+            if(!result1) {
                 ConfirmDialog.dialog("Lütfen bilgileri eksiksiz giriniz", 2);
+            } else {
+                setVisible(false);
+                UserHome userHome = new UserHome();
+                userHome.setVisible(true);
             }
         });
     }

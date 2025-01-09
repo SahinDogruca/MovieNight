@@ -9,7 +9,7 @@ import java.util.ArrayList;
 public class SuggestionDAO {
 
     public void addSuggestion(int movie_id, int user_id, int event_id) {
-        String sql = "INSERT INTO suggestion(event_id, user_id, movie_id) VALUES (?,?,?)";
+        String sql = "INSERT INTO suggestions(event_id, user_id, movie_id) VALUES (?,?,?)";
 
         try(Connection connection = DatabaseConfig.connect();
             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -30,7 +30,7 @@ public class SuggestionDAO {
     }
 
     public ArrayList<Suggestion> getSuggestionsByEvent(int event_id) {
-        String sql = "SELECT * FROM suggestion WHERE event_id = ?";
+        String sql = "SELECT * FROM suggestions WHERE event_id = ?";
         ArrayList<Suggestion> suggestions = new ArrayList<>();
         Suggestion suggestion;
 
@@ -61,7 +61,7 @@ public class SuggestionDAO {
     }
 
     public void deleteSuggestion(int suggestion_id) {
-        String sql = "DELETE FROM suggestion WHERE suggestion_id = ?";
+        String sql = "DELETE FROM suggestions WHERE suggestion_id = ?";
 
         try(Connection connection = DatabaseConfig.connect();
             PreparedStatement statement = connection.prepareStatement(sql)) {

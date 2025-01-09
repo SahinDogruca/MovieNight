@@ -1,12 +1,5 @@
 package org.example.Models;
 
-import org.example.Controllers.MoviesDAO;
-import org.example.Helpers.DatabaseConfig;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class Movies {
@@ -26,14 +19,14 @@ public class Movies {
         if (genre == null || genre.trim().isEmpty()) {
             throw new IllegalArgumentException("Genre boş bırakılamaz.");
         }
-        if (rating < 0 || rating > 5) {
-            throw new IllegalArgumentException("Rating 0 ile 5 arasında olmalıdır.");
+        if (rating < 0 || rating > 10) {
+            throw new IllegalArgumentException("Rating 0 ile 10 arasında olmalıdır.");
         }
         this.movieID = movieID;
         this.title = title;
         this.genre = genre;
         this.releaseDate = releaseDate;
-        setRating();
+        this.rating = rating;
     }
 
     public int getMovieID() {
@@ -78,40 +71,7 @@ public class Movies {
     }
 
     public double getRating() {
-        return rating;
+        return this.rating;
     }
 
-    public void setRating() {
-        String sql = "select rating from vote where movie_id = ?";
-
-        try(Connection connection = DatabaseConfig.connect();
-            PreparedStatement statement = connection.prepareStatement(sql);) {
-
-            statement.setInt(1, this.movieID);
-            Double rating = 0.;
-            int counter = 0;
-            ResultSet rs = statement.executeQuery();
-
-            while(rs.next()) {
-                rating += rs.getDouble("rating");
-                counter++;
-            }
-
-            if(counter == 0) {
-                rating = 0.;
-            } else {
-                rating = rating / counter;
-            }
-
-
-
-            this.rating = rating;
-
-            MoviesDAO moviesDAO = new MoviesDAO();
-            moviesDAO.setMovieRating(this.movieID, this.rating);
-
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-    }
 }

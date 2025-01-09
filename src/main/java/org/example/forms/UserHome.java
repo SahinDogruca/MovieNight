@@ -5,6 +5,7 @@ import org.example.Helpers.UserSession;
 import org.example.Models.Events;
 import org.example.Models.Invitation;
 import org.example.Models.Users;
+import org.postgresql.util.PSQLException;
 
 import javax.swing.*;
 import java.sql.Date;
@@ -101,8 +102,8 @@ public class UserHome extends JFrame {
                 ConfirmDialog.dialog( "Lütfen geçerli bir film seçiniz!", 2);
             } catch(IllegalArgumentException e2) {
                 ConfirmDialog.dialog( e2.getMessage(), 2);
-            } catch(RuntimeException e3) {
-                ConfirmDialog.dialog( "Oy 0 ile 5 arasında olmalıdır!", 2);
+            } catch (RuntimeException e3) {
+                ConfirmDialog.dialog( " Aynı filme 2 kere vote verilemez.", 2);
             }
 
 
@@ -195,7 +196,7 @@ public class UserHome extends JFrame {
                 boolean result = invitationDAO.addInvitation(selectedIndex, guestName);
 
                 if(!result) {
-                    ConfirmDialog.dialog( "Kullanıcı Bulunamadı ! ", 2);
+                    ConfirmDialog.dialog( "Kullanıcı kabul edilmedi ! ", 2);
                 }
             } catch (IndexOutOfBoundsException e1) {
                 ConfirmDialog.dialog( "Bir Event Seçmelisiniz !", 2);

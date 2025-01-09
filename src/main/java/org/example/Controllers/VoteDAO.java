@@ -34,7 +34,7 @@ public class VoteDAO {
             return false;
         }
 
-        String sql = "INSERT INTO vote (movie_id, user_id, rating) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO votes (movie_id, user_id, rating) VALUES (?, ?, ?)";
 
         try (Connection connection = DatabaseConfig.connect();
              PreparedStatement statement = connection.prepareStatement(sql)) {
