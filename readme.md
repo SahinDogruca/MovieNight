@@ -2,7 +2,7 @@
 
 To run this project, you'll need to create and configure a `.env` file with your database details.
 
-## Step 1: Create a `.env` File
+## Create a `.env` File
 
 Add the following content to your `.env` file:
 
