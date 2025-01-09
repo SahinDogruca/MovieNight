@@ -193,13 +193,15 @@ public class UserHome extends JFrame {
             try {
                 int selectedIndex = Integer.parseInt(tableEvents.getModel().getValueAt(tableEvents.getSelectedRow(), 0).toString());
 
-                boolean result = invitationDAO.addInvitation(selectedIndex, guestName);
+                boolean result = invitationDAO.addInvitation(selectedIndex, UserSession.getUserID(),guestName);
 
                 if(!result) {
                     ConfirmDialog.dialog( "Kullanıcı kabul edilmedi ! ", 2);
                 }
             } catch (IndexOutOfBoundsException e1) {
                 ConfirmDialog.dialog( "Bir Event Seçmelisiniz !", 2);
+            } catch (IllegalArgumentException e2) {
+                ConfirmDialog.dialog(e2.getMessage(), 2);
             }
 
 

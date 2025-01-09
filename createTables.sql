@@ -138,4 +138,37 @@ CREATE TRIGGER check_event_creator_trigger
 EXECUTE FUNCTION check_event_creator();
 
 
+CREATE OR REPLACE FUNCTION send_invitation(
+    event_id_input INT,
+    current_user_id_input INT,
+    invited_user_id_input INT,
+    status_input TEXT
+)
+    RETURNS TEXT AS $$
+DECLARE
+    event_owner_id INT;
+BEGIN
+    -- Etkinliği oluşturan kullanıcının ID'sini kontrol et
+    SELECT user_id INTO event_owner_id
+    FROM events
+    WHERE event_id = event_id_input;
+
+    -- Eğer etkinlik yoksa hata fırlat
+    IF NOT FOUND THEN
+        RETURN 'Etkinlik bulunamadı.';
+    END IF;
+
+    -- Kullanıcının etkinliği oluşturup oluşturmadığını kontrol et
+    IF event_owner_id != current_user_id_input THEN
+        RETURN 'Sadece etkinlik sahibi davetiye gönderebilir.';
+    END IF;
+
+    -- Davetiyeyi ekle
+    INSERT INTO invitations (event_id, user_id, status)
+    VALUES (event_id_input, invited_user_id_input, status_input);
+
+    RETURN 'Davetiye başarıyla gönderildi.';
+END;
+$$ LANGUAGE plpgsql;
+
 

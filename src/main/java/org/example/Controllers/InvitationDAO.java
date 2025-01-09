@@ -4,10 +4,7 @@ import org.example.Helpers.DatabaseConfig;
 import org.example.Models.Events;
 import org.example.Models.Invitation;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 
 import static org.example.Helpers.LoadersApi.eventsDAO;
@@ -15,7 +12,7 @@ import static org.example.Helpers.LoadersApi.usersDAO;
 
 public class InvitationDAO {
 
-    public boolean addInvitation(int eventID, String username) {
+    public boolean addInvitation(int eventID,int userSessionId, String username) {
         if (isNullOrEmpty(username, "Hata: Kullanıcı adı boş bırakılamaz.")) {
             return false;
         }
@@ -33,24 +30,34 @@ public class InvitationDAO {
             return false;
         }
 
-        // Davetiyeyi ekle
-        String sql = "INSERT INTO invitations (event_id, user_id, status) VALUES (?, ?, ?)";
+        try (Connection connection = DatabaseConfig.connect()) {
 
-        try (Connection connection = DatabaseConfig.connect();
-             PreparedStatement statement = connection.prepareStatement(sql)) {
+            String sql = "{? = CALL send_invitation(?,?,?,?)}";
 
-            statement.setInt(1, eventID); // Event ID
-            statement.setInt(2, userID); // Kullanıcı ID
-            statement.setString(3, Invitation.Status.PENDING.toString());
+            try(CallableStatement cstmt = connection.prepareCall(sql)) {
+                cstmt.registerOutParameter(1, Types.VARCHAR);
 
-            int rowsInserted = statement.executeUpdate();
-            if (rowsInserted > 0) {
-                System.out.println("Davet başarıyla gönderildi!");
-                return true;
+                cstmt.setInt(2, eventID);
+                cstmt.setInt(3, userSessionId);
+                cstmt.setInt(4, userID);
+                cstmt.setString(5, Invitation.Status.PENDING.toString());
+
+                cstmt.execute();
+
+                String result = cstmt.getString(1);
+
+
+                if(result.equals("Sadece etkinlik sahibi davetiye gönderebilir.")) {
+                    throw new IllegalArgumentException(result);
+                } if(result.equals("Davetiye başarıyla gönderildi.")) {
+                    return true;
+                }
+
+
             }
 
         } catch (SQLException e) {
-            handleSQLException(e, "Davet ekleme hatası.");
+            e.printStackTrace();
             return false;
         }
 
