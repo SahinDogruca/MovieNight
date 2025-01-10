@@ -4,6 +4,7 @@ import org.example.Helpers.DatabaseConfig;
 import org.example.Helpers.UserSession;
 import org.example.Models.Users;
 
+import javax.xml.crypto.Data;
 import java.sql.*;
 import java.util.ArrayList;
 
@@ -40,7 +41,7 @@ public class UsersDAO {
     }
 
     public ArrayList<Users> getAllUsers() throws SQLException {
-        String sql = "SELECT * FROM users";
+        String sql = "SELECT * FROM get_users";
 
         ArrayList<Users> users = new ArrayList<>();
 
@@ -229,6 +230,32 @@ public class UsersDAO {
             return null;
         }
     }
+
+    public boolean authenticateUser(String username, String password) {
+        String sql = "SELECT * FROM get_user_by_credentials(?, ?)";
+
+        try(Connection connection = DatabaseConfig.connect();
+            PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+            statement.setString(2, password);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                Users user = new Users(resultSet.getString("username"), resultSet.getString("email"), resultSet.getString("password"));
+                UserSession.setSession(resultSet.getInt("user_id"), user, false);
+
+                return true;
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return false;
+    }
+
+    /*
     public boolean authenticateUser(String username, String password) {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         try (Connection connection = DatabaseConfig.connect();
@@ -254,4 +281,6 @@ public class UsersDAO {
         }
         return false;
     }
+    */
+
 }

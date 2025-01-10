@@ -30,6 +30,6 @@ For testing or demonstration purposes, you can use the following credentials:
 
 - Ensure your database server is running and accessible from your application environment.
 - The project is configured to use **PostgreSQL** by default; if you’re using a different database, update the connection details in the `.env` file accordingly.
-
+- If you're using IntelliJ IDEA and want to use the **Swing GUI Designer**, make sure that this plugin is installed.
 
 

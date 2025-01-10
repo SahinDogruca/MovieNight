@@ -63,7 +63,7 @@ public class EventsDAO {
     }
 
     public ArrayList<Events> getEventsByUserId(int userId) {
-        String sql = "SELECT * FROM events WHERE user_id = ?";
+        String sql = "SELECT * FROM get_user_events(?)";
         ArrayList<Events> eventsList = new ArrayList<>();
 
         try(Connection connection = DatabaseConfig.connect();
@@ -74,7 +74,7 @@ public class EventsDAO {
             while (resultSet.next()) {
                 Events event = new Events(
                         resultSet.getInt("event_id"),
-                        userId,
+                        resultSet.getInt("user_id"),
                         resultSet.getString("event_name"),
                         resultSet.getDate("event_date").toLocalDate()
                 );

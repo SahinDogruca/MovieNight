@@ -171,7 +171,7 @@ public class MoviesDAO {
 
     public ArrayList<Movies> getAllMovies() {
         ArrayList<Movies> movies = new ArrayList<>();
-        String sql = "SELECT * FROM movies";
+        String sql = "SELECT * FROM get_movies";
 
         try(Connection connection = DatabaseConfig.connect();
             PreparedStatement statement = connection.prepareStatement(sql)) {

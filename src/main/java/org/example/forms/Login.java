@@ -11,7 +11,7 @@ import static org.example.Helpers.LoadersApi.usersDAO;
 
 public class Login extends JFrame {
     private JTextField txtUserName;
-    private JTextField txtUserPassword;
+    private JPasswordField txtUserPassword;
     private JButton btnLogin;
     private JButton btnSignUp;
     private JPanel panel1;
@@ -27,7 +27,7 @@ public class Login extends JFrame {
 
         btnLogin.addActionListener(e -> {
             String name = txtUserName.getText();
-            String pass = txtUserPassword.getText();
+            String pass = String.valueOf(txtUserPassword.getPassword());
             boolean result;
             if(adminRadioButton.isSelected()) {
                 result = adminDAO.authenticateUser(name, pass);

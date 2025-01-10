@@ -74,9 +74,6 @@ public class LoadersApi {
         ArrayList<Events> acceptedInvitations;
 
         events = eventsDAO.getEventsByUserId(UserSession.getUserID());
-        acceptedInvitations = invitationDAO.getAllAcceptedInvitations(UserSession.getUserID());
-
-        events.addAll(acceptedInvitations);
 
         String[] columns = {"id", "event_name", "event_date" ,"organizer_name", "organizer_email"};
 

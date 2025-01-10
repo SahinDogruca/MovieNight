@@ -32,7 +32,7 @@ public class InvitationDAO {
 
         try (Connection connection = DatabaseConfig.connect()) {
 
-            String sql = "{? = CALL send_invitation(?,?,?,?)}";
+            String sql = "{? = CALL send_invitation_with_cursor(?,?,?,?)}";
 
             try(CallableStatement cstmt = connection.prepareCall(sql)) {
                 cstmt.registerOutParameter(1, Types.VARCHAR);
